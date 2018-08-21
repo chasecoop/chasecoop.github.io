@@ -4,12 +4,9 @@ title: About
 permalink: /about/
 ---
 
-Some information about you!
+I make art and hit buttons for a living telling computers what to do. I'll put more here later.
 
-### More Information
-
-A place to include any other types of information that you'd like to include about yourself.
+If my tech blog isn't up your alley or you want to see my art, check out my photography and buy some photos.
+[chasecooperphoto.com](https://www.chasecooperphoto.com)
 
 ### Contact me
-
-[email@domain.com](mailto:email@domain.com)
