@@ -1,0 +1,6 @@
+
+In Linux, you can easily list python processes running by doing this in a shell:
+
+```
+ps -fA | grep python
+```
