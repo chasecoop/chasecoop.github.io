@@ -1,0 +1,51 @@
+---
+import PostList from '../components/PostList.astro';
+import ProjectGrid from '../components/ProjectGrid.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import Base from '../layouts/Base.astro';
+import { getPosts, getProjects } from '../lib/content';
+
+const posts = (await getPosts()).slice(0, 5);
+const allProjects = await getProjects();
+const featured = allProjects.filter((p) => p.data.featured);
+const projects = (featured.length ? featured : allProjects).slice(0, 3);
+---
+
+<Base title={SITE_TITLE} description={SITE_DESCRIPTION}>
+	<section class="intro prose">
+		<h1>Hi, I'm Chase. I build things and write about it.</h1>
+		<p class="lede">
+			This is where I keep notes, experiments and finished projects: real-time 3D in the browser, tools I make for
+			myself, and whatever I'm digging into this month.
+		</p>
+	</section>
+
+	<section>
+		<h2 class="eyebrow">Recent writing</h2>
+		<PostList posts={posts} />
+		<p class="more meta"><a href="/blog/">All writing →</a></p>
+	</section>
+
+	<section>
+		<h2 class="eyebrow">Projects</h2>
+		<ProjectGrid projects={projects} />
+		<p class="more meta"><a href="/projects/">All projects →</a></p>
+	</section>
+</Base>
+
+<style>
+	.intro {
+		margin-bottom: clamp(3rem, 8vw, 5rem);
+	}
+	.lede {
+		font-size: var(--step-1);
+		color: var(--ink-soft);
+		line-height: 1.45;
+	}
+	section + section {
+		margin-top: clamp(3rem, 8vw, 5rem);
+	}
+	.more {
+		margin-top: 1.25rem;
+	}
+</style>

@@ -1,0 +1,31 @@
+---
+import PostList from '../../components/PostList.astro';
+import Base from '../../layouts/Base.astro';
+import { getPosts } from '../../lib/content';
+
+const posts = await getPosts();
+const tags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
+---
+
+<Base title="Writing" description="Notes, write-ups and longer posts.">
+	<p class="eyebrow">Writing</p>
+	<h1>Writing</h1>
+	{
+		tags.length > 0 && (
+			<ul class="tags meta">
+				{tags.map((tag) => (
+					<li>
+						<a href={`/tags/${tag}/`}>{tag}</a>
+					</li>
+				))}
+			</ul>
+		)
+	}
+	<div class="list"><PostList posts={posts} /></div>
+</Base>
+
+<style>
+	.list {
+		margin-top: 2.5rem;
+	}
+</style>

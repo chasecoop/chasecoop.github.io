@@ -1,0 +1,28 @@
+---
+import { AUTHOR } from '../consts';
+const year = new Date().getFullYear();
+---
+
+<footer>
+	<div class="inner meta">
+		<span>© {year} {AUTHOR}</span>
+		<span>
+			<a href="/rss.xml">RSS</a> · <a href="https://github.com/chasecoop" rel="me noopener">GitHub</a>
+		</span>
+	</div>
+</footer>
+
+<style>
+	footer {
+		border-top: 1px solid var(--rule);
+	}
+	.inner {
+		max-width: calc(var(--wide) + 2 * var(--gutter));
+		margin: 0 auto;
+		padding: 1.5rem var(--gutter);
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: 0.5rem 1.5rem;
+	}
+</style>

@@ -1,0 +1,94 @@
+---
+import { type CollectionEntry, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { getProjects } from '../../lib/content';
+
+export async function getStaticPaths() {
+	const projects = await getProjects();
+	return projects.map((project) => ({
+		params: { slug: project.id },
+		props: project,
+	}));
+}
+type Props = CollectionEntry<'projects'>;
+
+const project = Astro.props;
+const { title, summary, date, tech, scene, repo } = project.data;
+const { Content } = await render(project);
+---
+
+<Base title={title} description={summary} type="article">
+	<article>
+		<header class="prose">
+			<p class="eyebrow"><a href="/projects/">Projects</a> / {date.getUTCFullYear()}</p>
+			<h1>{title}</h1>
+			<p class="dek">{summary}</p>
+			<p class="meta">
+				{tech.join(' / ')}
+				{
+					repo && (
+						<>
+							{' · '}
+							<a href={repo} rel="noopener">Source</a>
+						</>
+					)
+				}
+			</p>
+		</header>
+
+		{
+			scene && (
+				<figure class="stage">
+					<canvas data-scene={scene} aria-label={`Interactive 3D scene: ${title}`} />
+					<noscript>This project needs JavaScript to render.</noscript>
+				</figure>
+			)
+		}
+
+		<div class="prose">
+			<Content />
+		</div>
+	</article>
+</Base>
+
+<script>
+	// Each project's scene lives in its own module under src/scripts/three/.
+	// import.meta.glob code-splits them, so Three.js only downloads on pages
+	// that actually mount a scene.
+	const scenes = import.meta.glob<{ mount: (canvas: HTMLCanvasElement) => () => void }>('../../scripts/three/*.ts');
+
+	for (const canvas of document.querySelectorAll<HTMLCanvasElement>('canvas[data-scene]')) {
+		const load = scenes[`../../scripts/three/${canvas.dataset.scene}.ts`];
+		if (!load) {
+			console.error(`No scene module named "${canvas.dataset.scene}"`);
+			continue;
+		}
+		load().then(({ mount }) => {
+			const dispose = mount(canvas);
+			addEventListener('pagehide', dispose, { once: true });
+		});
+	}
+</script>
+
+<style>
+	.eyebrow a {
+		text-decoration: none;
+	}
+	.dek {
+		font-size: var(--step-1);
+		font-style: italic;
+		color: var(--ink-soft);
+		line-height: 1.4;
+	}
+	.stage {
+		margin: 2.5rem 0;
+		border: 1px solid var(--rule);
+		background: var(--code-bg);
+	}
+	.stage canvas {
+		width: 100%;
+		height: auto;
+		aspect-ratio: 16 / 9;
+		touch-action: none;
+	}
+</style>

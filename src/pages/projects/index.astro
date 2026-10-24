@@ -1,0 +1,21 @@
+---
+import ProjectGrid from '../../components/ProjectGrid.astro';
+import Base from '../../layouts/Base.astro';
+import { getProjects } from '../../lib/content';
+
+const projects = await getProjects();
+---
+
+<Base title="Projects" description="Things I've built: Three.js experiments, tools and more.">
+	<p class="eyebrow">Projects</p>
+	<h1>Projects</h1>
+	<p class="lede prose">Things I've built. Most of the 3D ones run live in the page.</p>
+	<ProjectGrid projects={projects} />
+</Base>
+
+<style>
+	.lede {
+		color: var(--ink-soft);
+		margin-bottom: 3rem;
+	}
+</style>

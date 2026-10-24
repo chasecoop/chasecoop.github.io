@@ -1,0 +1,37 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import PostList from '../../components/PostList.astro';
+import Base from '../../layouts/Base.astro';
+import { getPosts } from '../../lib/content';
+
+export async function getStaticPaths() {
+	const posts = await getPosts();
+	const tags = [...new Set(posts.flatMap((p) => p.data.tags))];
+	return tags.map((tag) => ({
+		params: { tag },
+		props: { posts: posts.filter((p) => p.data.tags.includes(tag)) },
+	}));
+}
+
+interface Props {
+	posts: CollectionEntry<'blog'>[];
+}
+
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+---
+
+<Base title={`#${tag}`} description={`Posts tagged ${tag}.`}>
+	<p class="eyebrow"><a href="/blog/">Writing</a> / tag</p>
+	<h1>#{tag}</h1>
+	<div class="list"><PostList posts={posts} /></div>
+</Base>
+
+<style>
+	.list {
+		margin-top: 2.5rem;
+	}
+	.eyebrow a {
+		text-decoration: none;
+	}
+</style>
