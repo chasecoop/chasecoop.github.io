@@ -14,15 +14,15 @@ npm run build    # static output in dist/
 
 ## Add a blog post
 
-Create `src/content/blog/<slug>.md` (or `.mdx`):
+Posts are written as drafts in `drafts/` (git-ignored, so never public) and moved into
+`src/content/blog/<slug>.md` when they're done. The `/website` Claude Code skill handles this.
+By hand:
 
 ```md
 ---
 title: Post title
-description: One-line summary shown in lists and the RSS feed.
 pubDate: 2026-10-24
-tags: [threejs]
-draft: true   # optional: visible in dev, left out of the live site
+description: Optional. Defaults to the first paragraph, for link previews and RSS.
 ---
 ```
 

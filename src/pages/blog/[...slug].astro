@@ -2,7 +2,7 @@
 import { type CollectionEntry, render } from 'astro:content';
 import FormattedDate from '../../components/FormattedDate.astro';
 import Base from '../../layouts/Base.astro';
-import { getPosts } from '../../lib/content';
+import { getPosts, summarize } from '../../lib/content';
 
 export async function getStaticPaths() {
 	const posts = await getPosts();
@@ -17,7 +17,8 @@ interface Props {
 }
 
 const { post, older } = Astro.props;
-const { title, description, pubDate, updatedDate } = post.data;
+const { title, pubDate, updatedDate } = post.data;
+const description = summarize(post);
 const { Content } = await render(post);
 ---
 

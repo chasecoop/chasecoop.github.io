@@ -181,3 +181,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Blog drafts in progress. Local only, never committed (see the /website skill).
+/drafts/
