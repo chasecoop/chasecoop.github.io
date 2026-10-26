@@ -26,11 +26,11 @@ export function mount(canvas: HTMLCanvasElement) {
 	geometry.setAttribute('position', knot.getAttribute('position'));
 	geometry.setIndex(lines);
 	knot.dispose();
-	const material = new THREE.LineBasicMaterial({ transparent: true, opacity: 0.7 });
+	const material = new THREE.LineBasicMaterial({ transparent: true, opacity: 0.85 });
 	const mesh = new THREE.LineSegments(geometry, material);
 	scene.add(mesh);
 
-	material.color.set(getComputedStyle(canvas).getPropertyValue('--tile-fg').trim() || '#e9e7e1');
+	material.color.set(getComputedStyle(canvas).getPropertyValue('--tile-fg').trim() || '#232528');
 
 	const resize = () => {
 		const { clientWidth: w, clientHeight: h } = canvas;

@@ -1,6 +1,6 @@
 /* Tokens ---------------------------------------------------------------- */
 /* Direction B "Workshop" from the design canvas. Mono for the chrome,
-   Charter for reading, dark tiles that look like running viewports. */
+   Charter for reading, everything on white. */
 :root {
 	color-scheme: light;
 
@@ -10,10 +10,10 @@
 	--rule: #dcdad3;
 	--link: #c2410c;
 	--link-hover: #9a3412;
-	--tile-bg: #151618;
-	--tile-fg: #e9e7e1;
-	--stage-bg: #101113;
-	--code-bg: #ecebe5;
+	--tile-bg: #f4f4f2;
+	--tile-fg: #232528;
+	--stage-bg: #f4f4f2;
+	--code-bg: #f4f4f2;
 	--tok-string: #4d6b1f;
 	--tok-number: #8a5a12;
 
