@@ -1,75 +1,45 @@
 ---
 import { SITE_TITLE } from '../consts';
 
-const links = [
-	{ href: '/blog/', label: 'Writing' },
-	{ href: '/projects/', label: 'Projects' },
-	{ href: '/about/', label: 'About' },
-];
 const path = Astro.url.pathname;
+const links = [
+	{ href: '/projects/', label: 'projects', current: path === '/' || path.startsWith('/projects/') },
+	{ href: '/blog/', label: 'blog', current: path.startsWith('/blog/') },
+	{ href: 'https://github.com/chasecoop', label: 'github', current: false },
+];
 ---
 
-<header>
+<header class="col">
 	<a class="skip-link" href="#main">Skip to content</a>
+	<a class="quiet" href="/">{SITE_TITLE}</a>
 	<nav aria-label="Main">
-		<a class="wordmark" href="/">{SITE_TITLE}</a>
-		<ul>
-			{
-				links.map(({ href, label }) => (
-					<li>
-						<a href={href} aria-current={path.startsWith(href) ? 'page' : undefined}>
-							{label}
-						</a>
-					</li>
-				))
-			}
-		</ul>
+		{
+			links.map(({ href, label, current }) => (
+				<a class="quiet" href={href} aria-current={current ? 'page' : undefined} rel={href.startsWith('http') ? 'me noopener' : undefined}>
+					{label}
+				</a>
+			))
+		}
 	</nav>
 </header>
 
 <style>
 	header {
-		border-bottom: 1px solid var(--rule);
-	}
-	nav {
-		max-width: calc(var(--wide) + 2 * var(--gutter));
-		margin: 0 auto;
-		padding: 1.1rem var(--gutter);
 		display: flex;
 		flex-wrap: wrap;
-		align-items: baseline;
 		justify-content: space-between;
-		gap: 0.5rem 1.5rem;
+		align-items: baseline;
+		gap: var(--space-2) var(--space-4);
+		padding-top: var(--space-5);
 	}
-	.wordmark {
-		font-size: var(--step-1);
-		font-weight: 600;
-		font-style: italic;
-		letter-spacing: -0.02em;
-		text-decoration: none;
-	}
-	ul {
+	nav {
 		display: flex;
-		gap: 1.5rem;
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		font-family: var(--font-mono);
-		font-size: var(--step--1);
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
+		flex-wrap: wrap;
+		gap: var(--space-4);
 	}
-	ul a {
-		text-decoration: none;
-		color: var(--ink-soft);
-	}
-	ul a:hover,
-	ul a[aria-current='page'] {
-		color: var(--ink);
-	}
-	ul a[aria-current='page'] {
+	[aria-current='page'] {
 		text-decoration: underline;
-		text-decoration-color: var(--accent);
-		text-underline-offset: 0.4em;
+		text-decoration-color: var(--muted);
+		text-underline-offset: 4px;
 	}
 </style>

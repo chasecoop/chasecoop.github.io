@@ -1,46 +1,66 @@
 /* Tokens ---------------------------------------------------------------- */
+/* Direction B "Workshop" from the design canvas. Mono for the chrome,
+   Charter for reading, dark tiles that look like running viewports. */
 :root {
 	color-scheme: light dark;
 
-	--paper: #f6f4ef;
-	--ink: #1b1a17;
-	--ink-soft: #57534b;
-	--rule: #d9d4c8;
-	--accent: #a8321f;
-	--code-bg: #ebe7dd;
-	--tok-comment: #8a8478;
-	--tok-keyword: #a8321f;
-	--tok-string: #3d6b35;
-	--tok-function: #2f5a8a;
+	--bg: #f6f5f1;
+	--fg: #232528;
+	--muted: #5f6267;
+	--rule: #dcdad3;
+	--link: #c2410c;
+	--link-hover: #9a3412;
+	--tile-bg: #151618;
+	--tile-fg: #e9e7e1;
+	--stage-bg: #101113;
+	--code-bg: #ecebe5;
+	--tok-string: #4d6b1f;
 	--tok-number: #8a5a12;
 
-	--font-serif: 'Newsreader Variable', Georgia, serif;
-	--font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+	--font-body: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, Georgia, serif;
+	--font-ui: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+	--font-mono: var(--font-ui);
 
-	--measure: 40rem;
-	--wide: 64rem;
-	--gutter: clamp(1rem, 4vw, 2rem);
+	--text-xs: 12px;
+	--text-sm: 13px;
+	--text-base: 14px;
+	--text-lg: 18px;
+	--text-xl: 22px;
 
-	--step--1: clamp(0.83rem, 0.8rem + 0.15vw, 0.9rem);
-	--step-0: clamp(1.06rem, 1rem + 0.3vw, 1.2rem);
-	--step-1: clamp(1.3rem, 1.2rem + 0.5vw, 1.5rem);
-	--step-2: clamp(1.6rem, 1.4rem + 1vw, 2.1rem);
-	--step-3: clamp(2.1rem, 1.7rem + 2vw, 3.2rem);
+	--space-1: 4px;
+	--space-2: 8px;
+	--space-3: 12px;
+	--space-4: 24px;
+	--space-5: 48px;
+	--space-6: 96px;
+
+	--measure: 760px;
+	--measure-wide: 1080px;
+	--gutter: var(--space-4);
+	--radius: 0;
 }
 
 @media (prefers-color-scheme: dark) {
 	:root {
-		--paper: #151513;
-		--ink: #e9e5dc;
-		--ink-soft: #a29d92;
-		--rule: #33312c;
-		--accent: #f0765f;
-		--code-bg: #211f1c;
-		--tok-comment: #7d776c;
-		--tok-keyword: #f0765f;
-		--tok-string: #9cc58c;
-		--tok-function: #8fb8e6;
+		--bg: #111213;
+		--fg: #e4e2dc;
+		--muted: #9b9a95;
+		--rule: #2b2d30;
+		--link: #ff8a3d;
+		--link-hover: #ffb380;
+		--tile-bg: #1d1f22;
+		--tile-fg: #e4e2dc;
+		--stage-bg: #1a1c1f;
+		--code-bg: #1a1c1e;
+		--tok-string: #a9c77f;
 		--tok-number: #e3b36a;
+	}
+}
+
+@media (max-width: 440px) {
+	:root {
+		--gutter: 16px;
+		--space-6: 64px;
 	}
 }
 
@@ -58,112 +78,190 @@ html {
 
 body {
 	margin: 0;
-	background: var(--paper);
-	color: var(--ink);
-	font-family: var(--font-serif);
-	font-size: var(--step-0);
-	line-height: 1.6;
-	font-optical-sizing: auto;
-	text-rendering: optimizeLegibility;
-	display: flex;
-	flex-direction: column;
-	min-height: 100vh;
-}
-
-main {
-	flex: 1;
-	width: 100%;
-	max-width: calc(var(--wide) + 2 * var(--gutter));
-	margin: 0 auto;
-	padding: clamp(2rem, 6vw, 4rem) var(--gutter);
+	background: var(--bg);
+	color: var(--fg);
+	font-family: var(--font-ui);
+	font-size: var(--text-base);
+	line-height: var(--space-4);
 }
 
 h1,
 h2,
-h3,
-h4 {
-	font-weight: 500;
-	line-height: 1.15;
-	letter-spacing: -0.01em;
-	margin: 2em 0 0.5em;
-	text-wrap: balance;
-}
-h1 {
-	font-size: var(--step-3);
-	margin-top: 0;
-}
-h2 {
-	font-size: var(--step-2);
-}
 h3 {
-	font-size: var(--step-1);
+	font: inherit;
+	font-weight: 400;
+	margin: 0;
 }
 
 p {
-	margin: 0 0 1.1em;
-	text-wrap: pretty;
+	margin: 0;
 }
 
 a {
-	color: inherit;
-	text-decoration-color: var(--accent);
-	text-decoration-thickness: 1px;
-	text-underline-offset: 0.18em;
+	color: var(--link);
+	text-decoration: none;
 }
 a:hover {
-	color: var(--accent);
+	color: var(--link-hover);
+	text-decoration: underline;
 }
 :focus-visible {
-	outline: 2px solid var(--accent);
+	outline: 2px solid var(--link);
 	outline-offset: 3px;
 }
 
-img,
-canvas,
-video {
-	max-width: 100%;
-	height: auto;
+svg,
+canvas {
 	display: block;
 }
 
-hr {
-	border: 0;
-	border-top: 1px solid var(--rule);
-	margin: 2.5rem 0;
+/* Layout ---------------------------------------------------------------- */
+.col,
+.col-wide {
+	margin-inline: auto;
+	padding-inline: var(--gutter);
+}
+.col {
+	max-width: calc(var(--measure) + 2 * var(--gutter));
+}
+.col-wide {
+	max-width: calc(var(--measure-wide) + 2 * var(--gutter));
 }
 
-code,
-kbd,
-pre {
+/* Links that read as text until hovered. */
+.quiet {
+	color: var(--fg);
+}
+.dim {
+	color: var(--muted);
+}
+.quiet:hover,
+.dim:hover {
+	color: var(--link);
+}
+
+.muted {
+	color: var(--muted);
+}
+
+/* "label ........ count" rows above lists. */
+.section-head {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: var(--space-4);
+	margin-bottom: var(--space-4);
+}
+
+/* Breadcrumb, title, one line. Shared by posts and projects. */
+.crumb {
+	color: var(--muted);
+}
+.title {
+	margin-top: var(--space-2);
+	font-size: var(--text-xl);
+	line-height: calc(var(--space-4) + var(--space-2));
+}
+
+/* Previous / next links under a post or project. */
+.pager {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: var(--space-2) var(--space-4);
+	margin-top: var(--space-5);
+	padding-top: var(--space-4);
+	border-top: 1px solid var(--rule);
+	font-size: var(--text-sm);
+}
+
+/* Two-column key/value rows: dates on lists, specs on projects. */
+.row {
+	display: flex;
+	gap: var(--space-4);
+	padding: var(--space-1) 0;
+}
+.row > :first-child {
+	flex: 0 0 12ch;
+	color: var(--muted);
+	font-variant-numeric: tabular-nums;
+}
+@media (max-width: 440px) {
+	.row {
+		flex-direction: column;
+		gap: 0;
+	}
+}
+
+/* Reading text ---------------------------------------------------------- */
+.prose {
+	max-width: 36em;
+	font-family: var(--font-body);
+	font-size: var(--text-lg);
+	line-height: calc(var(--space-4) + var(--space-1));
+	text-wrap: pretty;
+}
+.prose p,
+.prose ul,
+.prose ol,
+.prose pre,
+.prose blockquote {
+	margin: 0 0 var(--space-4);
+}
+.prose h2,
+.prose h3 {
+	margin: var(--space-5) 0 var(--space-3);
+	font-family: var(--font-ui);
+	font-size: var(--text-base);
+	line-height: var(--space-4);
+	font-weight: 500;
+}
+.prose code {
 	font-family: var(--font-mono);
-	font-size: 0.85em;
-}
-:not(pre) > code {
+	font-size: 0.8em;
 	background: var(--code-bg);
-	padding: 0.1em 0.35em;
-	border-radius: 3px;
+	padding: 1px var(--space-1);
 }
-pre {
-	background: var(--code-bg);
-	padding: 1rem 1.25rem;
+.prose pre {
+	padding: var(--space-3);
 	overflow-x: auto;
-	border-radius: 4px;
-	line-height: 1.5;
+	background: var(--code-bg);
+	border-radius: var(--radius);
+	font-size: var(--text-sm);
+	line-height: calc(var(--space-4) - var(--space-1));
 	tab-size: 2;
 }
+.prose pre code {
+	background: none;
+	padding: 0;
+	font-size: inherit;
+}
+.prose blockquote {
+	padding-left: var(--space-3);
+	border-left: 1px solid var(--rule);
+	color: var(--muted);
+}
+.prose hr {
+	border: 0;
+	border-top: 1px solid var(--rule);
+	margin: var(--space-5) 0;
+}
+.prose img {
+	max-width: 100%;
+	height: auto;
+}
 
-/* Prism tokens */
+/* Prism tokens: one accent, everything else quiet. */
 .token.comment,
 .token.prolog,
-.token.doctype {
-	color: var(--tok-comment);
-	font-style: italic;
+.token.doctype,
+.token.punctuation {
+	color: var(--muted);
 }
 .token.keyword,
 .token.operator,
-.token.important,
 .token.tag {
-	color: var(--tok-keyword);
+	color: var(--link);
 }
 .token.string,
 .token.char,
@@ -171,71 +269,13 @@ pre {
 .token.regex {
 	color: var(--tok-string);
 }
-.token.function,
-.token.class-name,
-.token.builtin,
-.token.attr-name {
-	color: var(--tok-function);
-}
 .token.number,
 .token.boolean,
-.token.constant,
-.token.property {
+.token.constant {
 	color: var(--tok-number);
-}
-.token.punctuation {
-	color: var(--ink-soft);
-}
-
-blockquote {
-	margin: 1.5em 0;
-	padding-left: 1.25em;
-	border-left: 2px solid var(--accent);
-	font-style: italic;
-	color: var(--ink-soft);
 }
 
 /* Utilities ------------------------------------------------------------- */
-.prose {
-	max-width: var(--measure);
-}
-.prose > :first-child {
-	margin-top: 0;
-}
-
-.meta {
-	font-family: var(--font-mono);
-	font-size: var(--step--1);
-	color: var(--ink-soft);
-	letter-spacing: 0.02em;
-}
-
-.eyebrow {
-	font-family: var(--font-mono);
-	font-size: var(--step--1);
-	text-transform: uppercase;
-	letter-spacing: 0.12em;
-	color: var(--ink-soft);
-	margin: 0 0 1rem;
-	font-weight: 400;
-}
-
-.tags {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 0.35rem 0.9rem;
-	list-style: none;
-	padding: 0;
-	margin: 0;
-}
-.tags a {
-	text-decoration: none;
-}
-.tags a::before {
-	content: '#';
-	color: var(--accent);
-}
-
 .sr-only {
 	position: absolute;
 	width: 1px;
@@ -249,13 +289,13 @@ blockquote {
 	position: absolute;
 	left: var(--gutter);
 	top: -3rem;
-	background: var(--ink);
-	color: var(--paper);
-	padding: 0.5rem 0.75rem;
+	background: var(--fg);
+	color: var(--bg);
+	padding: var(--space-1) var(--space-2);
 	z-index: 10;
 }
 .skip-link:focus {
-	top: 0.5rem;
+	top: var(--space-2);
 }
 
 @media (prefers-reduced-motion: reduce) {

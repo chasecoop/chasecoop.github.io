@@ -9,17 +9,34 @@ export function mount(canvas: HTMLCanvasElement) {
 	const camera = new THREE.PerspectiveCamera(40, 16 / 9, 0.1, 100);
 	camera.position.set(0, 0, 6);
 
-	const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#a8321f';
-	const mesh = new THREE.Mesh(
-		new THREE.TorusKnotGeometry(1.1, 0.34, 220, 32),
-		new THREE.MeshStandardMaterial({ color: accent, roughness: 0.35, metalness: 0.1 }),
-	);
+	// A (2,3) trefoil drawn as rings and lengthwise lines (no triangle
+	// diagonals) in the stage's foreground colour.
+	const tubular = 128;
+	const radial = 10;
+	const knot = new THREE.TorusKnotGeometry(1.1, 0.34, tubular, radial, 2, 3);
+	const at = (j: number, i: number) => j * (radial + 1) + i;
+	const lines: number[] = [];
+	for (let j = 0; j <= tubular; j++) {
+		for (let i = 0; i <= radial; i++) {
+			if (i < radial) lines.push(at(j, i), at(j, i + 1));
+			if (j < tubular) lines.push(at(j, i), at(j + 1, i));
+		}
+	}
+	const geometry = new THREE.BufferGeometry();
+	geometry.setAttribute('position', knot.getAttribute('position'));
+	geometry.setIndex(lines);
+	knot.dispose();
+	const material = new THREE.LineBasicMaterial({ transparent: true, opacity: 0.7 });
+	const mesh = new THREE.LineSegments(geometry, material);
 	scene.add(mesh);
 
-	scene.add(new THREE.HemisphereLight(0xffffff, 0x404040, 1.2));
-	const key = new THREE.DirectionalLight(0xffffff, 2);
-	key.position.set(3, 4, 5);
-	scene.add(key);
+	const setColor = () => {
+		const fg = getComputedStyle(canvas).getPropertyValue('--tile-fg').trim();
+		material.color.set(fg || '#e9e7e1');
+	};
+	const scheme = matchMedia('(prefers-color-scheme: dark)');
+	scheme.addEventListener('change', setColor);
+	setColor();
 
 	const resize = () => {
 		const { clientWidth: w, clientHeight: h } = canvas;
@@ -60,8 +77,9 @@ export function mount(canvas: HTMLCanvasElement) {
 	return () => {
 		renderer.setAnimationLoop(null);
 		observer.disconnect();
-		mesh.geometry.dispose();
-		(mesh.material as THREE.Material).dispose();
+		scheme.removeEventListener('change', setColor);
+		geometry.dispose();
+		material.dispose();
 		renderer.dispose();
 	};
 }

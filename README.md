@@ -31,10 +31,14 @@ draft: true   # optional: visible in dev, left out of the live site
 Create `src/content/projects/<slug>.mdx` with `title`, `summary`, `date`, and optionally `tech`,
 `tags`, `thumbnail` (a path to an image in `src/`), `repo` and `featured: true`.
 
+The grid tile is `src/assets/thumbs/<slug>.svg` if it exists. Draw it with `stroke="currentColor"`
+and no `style` attributes so it follows the theme and passes the CSP. Without one, the tile falls
+back to `thumbnail`, then to the title's first letter.
+
 For a live 3D scene, add `src/scripts/three/<name>.ts` that exports
 `mount(canvas: HTMLCanvasElement): () => void` (return a cleanup function) and set
 `scene: <name>` in the project's frontmatter. Three.js is bundled, so it only loads on pages that
-mount a scene. See `spinning-cube.ts` for the pattern.
+mount a scene. See `torus-knot.ts` for the pattern.
 
 ## Security rules for this repo
 

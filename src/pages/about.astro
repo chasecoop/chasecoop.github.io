@@ -3,17 +3,27 @@ import Base from '../layouts/Base.astro';
 ---
 
 <Base title="About" description="Who I am and what this site is for.">
-	<article class="prose">
-		<p class="eyebrow">About</p>
-		<h1>About</h1>
+	<article class="col page">
+		<h1 class="title">About</h1>
 		<!-- TODO(chase): replace with your own bio. -->
-		<p>
-			I'm Chase. This site is my workshop log: write-ups of what I'm learning and a gallery of the things I build,
-			especially interactive 3D with Three.js.
-		</p>
-		<p>
-			Code for most projects lives on <a href="https://github.com/chasecoop" rel="me noopener">GitHub</a>. New posts
-			show up in the <a href="/rss.xml">RSS feed</a>.
-		</p>
+		<div class="prose body">
+			<p>
+				I'm Chase. This site is a log of what I build: interactive 3D with Three.js, small tools, and notes on how each
+				one came together.
+			</p>
+			<p>
+				Code for most projects lives on <a href="https://github.com/chasecoop" rel="me noopener">GitHub</a>. New posts
+				show up in the <a href="/rss.xml">RSS feed</a>.
+			</p>
+		</div>
 	</article>
 </Base>
+
+<style>
+	.page {
+		margin-top: var(--space-6);
+	}
+	.body {
+		margin-top: var(--space-5);
+	}
+</style>

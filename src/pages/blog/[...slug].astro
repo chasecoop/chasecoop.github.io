@@ -6,64 +6,61 @@ import { getPosts } from '../../lib/content';
 
 export async function getStaticPaths() {
 	const posts = await getPosts();
-	return posts.map((post) => ({
+	return posts.map((post, i) => ({
 		params: { slug: post.id },
-		props: post,
+		props: { post, older: posts[i + 1] },
 	}));
 }
-type Props = CollectionEntry<'blog'>;
+interface Props {
+	post: CollectionEntry<'blog'>;
+	older?: CollectionEntry<'blog'>;
+}
 
-const post = Astro.props;
-const { title, description, pubDate, updatedDate, tags } = post.data;
+const { post, older } = Astro.props;
+const { title, description, pubDate, updatedDate } = post.data;
 const { Content } = await render(post);
 ---
 
 <Base title={title} description={description} type="article">
-	<article class="prose">
-		<header>
-			<p class="meta">
-				<FormattedDate date={pubDate} />
-				{
-					updatedDate && (
-						<>
-							{' '}
-							· updated <FormattedDate date={updatedDate} />
-						</>
-					)
-				}
-			</p>
-			<h1>{title}</h1>
-			<p class="dek">{description}</p>
-		</header>
-		<Content />
-		{
-			tags.length > 0 && (
-				<footer>
-					<hr />
-					<ul class="tags meta">
-						{tags.map((tag) => (
-							<li>
-								<a href={`/tags/${tag}/`}>{tag}</a>
-							</li>
-						))}
-					</ul>
-				</footer>
-			)
-		}
+	<article class="col page">
+		<p class="crumb">
+			<a class="dim" href="/blog/">blog</a> / <FormattedDate date={pubDate} />
+			{
+				updatedDate && (
+					<>
+						{' '}
+						(updated <FormattedDate date={updatedDate} />)
+					</>
+				)
+			}
+		</p>
+		<h1 class="title">{title}</h1>
+
+		<div class="prose body">
+			<Content />
+		</div>
+
+		<nav class="pager" aria-label="More posts">
+			<a href="/blog/">&lt;- all posts</a>
+			{
+				older && (
+					<span>
+						<span class="muted">older </span>
+						<a class="quiet" href={`/blog/${older.id}/`}>
+							{older.data.title}
+						</a>
+					</span>
+				)
+			}
+		</nav>
 	</article>
 </Base>
 
 <style>
-	header {
-		margin-bottom: 2.5rem;
+	.page {
+		margin-top: var(--space-6);
 	}
-	h1 {
-		margin: 0.5rem 0 0.75rem;
-	}
-	.dek {
-		font-size: var(--step-1);
-		font-style: italic;
-		color: var(--ink-soft);
-		line-height: 1.4;
+	.body {
+		margin-top: var(--space-5);
 	}
 </style>

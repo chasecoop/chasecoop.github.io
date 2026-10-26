@@ -1,16 +1,17 @@
 ---
 title: Torus knot
-summary: A first Three.js scene to prove out how projects run on this site. Drag it to spin.
+summary: A (2,3) trefoil in Three.js. The first live scene on the site.
 date: 2026-10-24
 tech: [Three.js, TypeScript]
 tags: [threejs, webgl]
-scene: spinning-cube
+scene: torus-knot
+repo: https://github.com/chasecoop/chasecoop.github.io
 featured: true
 ---
 
-This is the template every 3D project on the site follows. The scene is a TypeScript module in
-`src/scripts/three/` that exports `mount(canvas)` and returns a cleanup function. The project's
-frontmatter names it with `scene:`, and the page loads it on demand, so Three.js only downloads here.
+I put this up first to prove that a page here can host a live WebGL canvas without slowing the rest
+of the site down. It is a wireframe trefoil that turns slowly on its own until you grab it.
 
-Everything is bundled and served from this domain. No CDN scripts, which keeps the
-Content Security Policy strict.
+Every 3D project follows the same pattern. The scene is a TypeScript module in `src/scripts/three/`
+that exports `mount(canvas)` and returns a cleanup function, and Three.js only downloads on pages
+that mount one.

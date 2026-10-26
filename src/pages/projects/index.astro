@@ -6,16 +6,18 @@ import { getProjects } from '../../lib/content';
 const projects = await getProjects();
 ---
 
-<Base title="Projects" description="Things I've built: Three.js experiments, tools and more.">
-	<p class="eyebrow">Projects</p>
-	<h1>Projects</h1>
-	<p class="lede prose">Things I've built. Most of the 3D ones run live in the page.</p>
-	<ProjectGrid projects={projects} />
+<Base title="Projects" description="Things I've built. Most of the 3D ones run live in the page.">
+	<div class="col page">
+		<div class="section-head">
+			<h1>projects</h1>
+			<span class="muted">{String(projects.length).padStart(2, '0')}</span>
+		</div>
+		<ProjectGrid projects={projects} />
+	</div>
 </Base>
 
 <style>
-	.lede {
-		color: var(--ink-soft);
-		margin-bottom: 3rem;
+	.page {
+		margin-top: var(--space-6);
 	}
 </style>

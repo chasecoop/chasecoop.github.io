@@ -9,14 +9,33 @@ interface Props {
 const { projects } = Astro.props;
 ---
 
-<div class="grid">
-	{projects.map((project) => <ProjectCard project={project} />)}
-</div>
+<ul>
+	{
+		projects.map((project) => (
+			<li>
+				<ProjectCard project={project} />
+			</li>
+		))
+	}
+</ul>
 
 <style>
-	.grid {
+	ul {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
-		gap: 2.5rem 2rem;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: var(--space-4);
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	@media (max-width: 720px) {
+		ul {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+	@media (max-width: 440px) {
+		ul {
+			grid-template-columns: minmax(0, 1fr);
+		}
 	}
 </style>

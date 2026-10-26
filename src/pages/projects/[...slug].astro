@@ -5,49 +5,88 @@ import { getProjects } from '../../lib/content';
 
 export async function getStaticPaths() {
 	const projects = await getProjects();
-	return projects.map((project) => ({
+	return projects.map((project, i) => ({
 		params: { slug: project.id },
-		props: project,
+		props: { project, next: projects[i + 1] },
 	}));
 }
-type Props = CollectionEntry<'projects'>;
+interface Props {
+	project: CollectionEntry<'projects'>;
+	next?: CollectionEntry<'projects'>;
+}
 
-const project = Astro.props;
+const { project, next } = Astro.props;
 const { title, summary, date, tech, scene, repo } = project.data;
 const { Content } = await render(project);
 ---
 
 <Base title={title} description={summary} type="article">
 	<article>
-		<header class="prose">
-			<p class="eyebrow"><a href="/projects/">Projects</a> / {date.getUTCFullYear()}</p>
-			<h1>{title}</h1>
-			<p class="dek">{summary}</p>
-			<p class="meta">
-				{tech.join(' / ')}
-				{
-					repo && (
-						<>
-							{' · '}
-							<a href={repo} rel="noopener">Source</a>
-						</>
-					)
-				}
-			</p>
+		<header class="col page">
+			<p class="crumb"><a class="dim" href="/projects/">projects</a> / {project.id}</p>
+			<div class="heading">
+				<h1 class="title">{title}</h1>
+				<span class="muted">{date.getUTCFullYear()}</span>
+			</div>
+			<p class="summary">{summary}</p>
 		</header>
 
 		{
 			scene && (
-				<figure class="stage">
-					<canvas data-scene={scene} aria-label={`Interactive 3D scene: ${title}`} />
-					<noscript>This project needs JavaScript to render.</noscript>
+				<figure class="col-wide stage-wrap">
+					<div class="stage">
+						<canvas data-scene={scene} aria-label={`Interactive 3D scene: ${title}`} />
+						<noscript>
+							<p class="noscript">This project needs JavaScript to run.</p>
+						</noscript>
+					</div>
+					<figcaption class="muted">drag to spin</figcaption>
 				</figure>
 			)
 		}
 
-		<div class="prose">
-			<Content />
-		</div>
+		<section class="col notes" aria-labelledby="notes">
+			<h2 id="notes">notes</h2>
+			<div class="prose">
+				<Content />
+			</div>
+			<dl>
+				{
+					tech.length > 0 && (
+						<div class="row">
+							<dt>tech</dt>
+							<dd>{tech.join(', ')}</dd>
+						</div>
+					)
+				}
+				{
+					repo && (
+						<div class="row">
+							<dt>source</dt>
+							<dd>
+								<a href={repo} rel="noopener">
+									{repo.replace(/^https:\/\//, '')}
+								</a>
+							</dd>
+						</div>
+					)
+				}
+			</dl>
+
+			<nav class="pager" aria-label="More projects">
+				<a href="/projects/">&lt;- all projects</a>
+				{
+					next && (
+						<span>
+							<span class="muted">next </span>
+							<a class="quiet" href={`/projects/${next.id}/`}>
+								{next.data.title}
+							</a>
+						</span>
+					)
+				}
+			</nav>
+		</section>
 	</article>
 </Base>
 
@@ -71,24 +110,57 @@ const { Content } = await render(project);
 </script>
 
 <style>
-	.eyebrow a {
-		text-decoration: none;
+	.page {
+		margin-top: var(--space-6);
 	}
-	.dek {
-		font-size: var(--step-1);
-		font-style: italic;
-		color: var(--ink-soft);
-		line-height: 1.4;
+	.heading {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: var(--space-2) var(--space-4);
+	}
+	.summary {
+		margin-top: var(--space-2);
+	}
+	.stage-wrap {
+		margin-block: var(--space-5) 0;
 	}
 	.stage {
-		margin: 2.5rem 0;
-		border: 1px solid var(--rule);
-		background: var(--code-bg);
+		position: relative;
+		aspect-ratio: 16 / 9;
+		background: var(--stage-bg);
+		color: var(--tile-fg);
+		border-radius: var(--radius);
+		cursor: grab;
+	}
+	.stage:active {
+		cursor: grabbing;
 	}
 	.stage canvas {
 		width: 100%;
-		height: auto;
-		aspect-ratio: 16 / 9;
+		height: 100%;
 		touch-action: none;
+	}
+	.noscript {
+		position: absolute;
+		inset: auto var(--space-3) var(--space-3);
+	}
+	figcaption {
+		margin-top: var(--space-2);
+		font-size: var(--text-xs);
+	}
+	.notes {
+		margin-top: var(--space-5);
+	}
+	.notes h2 {
+		margin-bottom: var(--space-3);
+	}
+	dl {
+		margin: var(--space-4) 0 0;
+	}
+	dd {
+		margin: 0;
+		overflow-wrap: anywhere;
 	}
 </style>

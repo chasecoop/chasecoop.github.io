@@ -1,3 +1,3 @@
-export const SITE_TITLE = 'snarezm';
-export const SITE_DESCRIPTION = 'Notes, experiments and things I build: Three.js, tools and whatever else.';
+export const SITE_TITLE = 'Chase Cooper';
+export const SITE_DESCRIPTION = 'Small 3D pieces and tools, with notes on how they were built.';
 export const AUTHOR = 'Chase Cooper';

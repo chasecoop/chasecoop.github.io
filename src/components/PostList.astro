@@ -9,55 +9,26 @@ interface Props {
 const { posts } = Astro.props;
 ---
 
-<ol class="posts">
+<ol>
 	{
 		posts.map((post) => (
-			<li>
+			<li class="row">
 				<FormattedDate date={post.data.pubDate} />
-				<div>
-					<a href={`/blog/${post.id}/`}>{post.data.title}</a>
-					{post.data.draft && <span class="meta"> (draft)</span>}
-					<p>{post.data.description}</p>
-				</div>
+				<span>
+					<a class="quiet" href={`/blog/${post.id}/`}>
+						{post.data.title}
+					</a>
+					{post.data.draft && <span class="muted"> (draft)</span>}
+				</span>
 			</li>
 		))
 	}
 </ol>
 
 <style>
-	.posts {
+	ol {
 		list-style: none;
-		padding: 0;
 		margin: 0;
-	}
-	li {
-		display: grid;
-		grid-template-columns: 7.5rem 1fr;
-		gap: 0.25rem 1.5rem;
-		padding: 1.25rem 0;
-		border-top: 1px solid var(--rule);
-	}
-	li:last-child {
-		border-bottom: 1px solid var(--rule);
-	}
-	li > :global(time) {
-		font-family: var(--font-mono);
-		font-size: var(--step--1);
-		color: var(--ink-soft);
-		padding-top: 0.3em;
-	}
-	a {
-		font-size: var(--step-1);
-		text-decoration: none;
-		line-height: 1.25;
-	}
-	p {
-		margin: 0.35rem 0 0;
-		color: var(--ink-soft);
-	}
-	@media (max-width: 560px) {
-		li {
-			grid-template-columns: 1fr;
-		}
+		padding: 0;
 	}
 </style>
