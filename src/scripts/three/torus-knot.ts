@@ -30,13 +30,7 @@ export function mount(canvas: HTMLCanvasElement) {
 	const mesh = new THREE.LineSegments(geometry, material);
 	scene.add(mesh);
 
-	const setColor = () => {
-		const fg = getComputedStyle(canvas).getPropertyValue('--tile-fg').trim();
-		material.color.set(fg || '#e9e7e1');
-	};
-	const scheme = matchMedia('(prefers-color-scheme: dark)');
-	scheme.addEventListener('change', setColor);
-	setColor();
+	material.color.set(getComputedStyle(canvas).getPropertyValue('--tile-fg').trim() || '#e9e7e1');
 
 	const resize = () => {
 		const { clientWidth: w, clientHeight: h } = canvas;
@@ -77,7 +71,6 @@ export function mount(canvas: HTMLCanvasElement) {
 	return () => {
 		renderer.setAnimationLoop(null);
 		observer.disconnect();
-		scheme.removeEventListener('change', setColor);
 		geometry.dispose();
 		material.dispose();
 		renderer.dispose();

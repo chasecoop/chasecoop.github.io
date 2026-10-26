@@ -2,9 +2,9 @@
 /* Direction B "Workshop" from the design canvas. Mono for the chrome,
    Charter for reading, dark tiles that look like running viewports. */
 :root {
-	color-scheme: light dark;
+	color-scheme: light;
 
-	--bg: #f6f5f1;
+	--bg: #fdfdfd;
 	--fg: #232528;
 	--muted: #5f6267;
 	--rule: #dcdad3;
@@ -38,23 +38,6 @@
 	--measure-wide: 1080px;
 	--gutter: var(--space-4);
 	--radius: 0;
-}
-
-@media (prefers-color-scheme: dark) {
-	:root {
-		--bg: #111213;
-		--fg: #e4e2dc;
-		--muted: #9b9a95;
-		--rule: #2b2d30;
-		--link: #ff8a3d;
-		--link-hover: #ffb380;
-		--tile-bg: #1d1f22;
-		--tile-fg: #e4e2dc;
-		--stage-bg: #1a1c1f;
-		--code-bg: #1a1c1e;
-		--tok-string: #a9c77f;
-		--tok-number: #e3b36a;
-	}
 }
 
 @media (max-width: 440px) {
