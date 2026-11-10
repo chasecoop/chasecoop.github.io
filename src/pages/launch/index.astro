@@ -21,7 +21,7 @@ const art = (id: string, thumbnail?: string) => {
 };
 ---
 
-<Base title="Launch" description="Apps, games and 3D experiments you can open and run." wide>
+<Base title="Launch" description="Apps, games and 3D experiments you can open and run.">
 	<h1 class="sr-only">launch</h1>
 	<ul class="grid">
 		{
@@ -30,7 +30,7 @@ const art = (id: string, thumbnail?: string) => {
 				const Tile = data.url ? 'a' : 'span';
 				return (
 					<li>
-						<Tile class:list={['tile', { still: !svg && still }]} {...(data.url ? { href: data.url, target: '_blank', rel: 'noopener' } : {})}>
+						<Tile class="tile" {...(data.url ? { href: data.url, target: '_blank', rel: 'noopener' } : {})}>
 							<span class="frame">
 								{svg ? <Fragment set:html={svg} /> : still ? <Image src={still} width={640} alt="" /> : null}
 							</span>
@@ -52,8 +52,8 @@ const art = (id: string, thumbnail?: string) => {
 <style>
 	.grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-		gap: 2px;
+		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+		gap: 0;
 		margin: 0;
 		padding: 0;
 		list-style: none;
@@ -105,10 +105,14 @@ const art = (id: string, thumbnail?: string) => {
 	.frame :global(.dash) {
 		stroke-dasharray: 2 3;
 	}
+	/* Hover or focus swaps the art for the caption, bottom-left. */
 	.cap {
 		position: absolute;
-		inset: auto 0 0;
-		padding: var(--space-2) var(--space-3);
+		inset: 0;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		padding: var(--space-3) var(--space-3) var(--space-4);
 		background: var(--bg);
 		font-size: var(--text-xs);
 		line-height: 1.45;
@@ -119,9 +123,14 @@ const art = (id: string, thumbnail?: string) => {
 	.tile:focus-visible .cap {
 		opacity: 1;
 	}
+	/* The caption covers the tile, so the focus ring goes on it too. */
+	.tile:focus-visible .cap {
+		outline: 2px solid var(--link);
+		outline-offset: -2px;
+	}
 	.app {
 		display: block;
-		color: var(--fg);
+		color: var(--link);
 		font-weight: 500;
 	}
 	.desc {
@@ -131,21 +140,23 @@ const art = (id: string, thumbnail?: string) => {
 	.kind {
 		color: var(--fg);
 	}
-	/* Phones: two columns, and the name always shows. */
+	/* Phones: two columns, and the name always shows, under the tile. */
 	@media (max-width: 640px) {
 		.grid {
 			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
 		.cap {
+			position: static;
+			display: block;
+			padding: var(--space-2) var(--space-3) var(--space-3);
 			background: none;
 			opacity: 1;
 		}
+		.app {
+			color: var(--fg);
+		}
 		.desc {
 			display: none;
-		}
-		/* Keep the name readable over a photo. */
-		.still .cap {
-			background: var(--bg);
 		}
 	}
 </style>

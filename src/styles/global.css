@@ -37,6 +37,8 @@
 	--measure: 760px;
 	--measure-wide: 1080px;
 	--gutter: var(--space-4);
+	--rail: 184px;
+	--page-top: var(--space-5);
 	--radius: 0;
 }
 
@@ -99,9 +101,28 @@ canvas {
 }
 
 /* Layout ---------------------------------------------------------------- */
+/* Nav rail on the left, everything else to its right. Phones stack them. */
+.shell {
+	display: flex;
+	align-items: flex-start;
+}
+.content {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+@media (max-width: 640px) {
+	:root {
+		--page-top: var(--space-4);
+	}
+	.shell {
+		display: block;
+	}
+}
+
+/* Columns sit against the rail rather than centring in the space left. */
 .col,
 .col-wide {
-	margin-inline: auto;
+	margin-inline: 0;
 	padding-inline: var(--gutter);
 }
 .col {
@@ -173,6 +194,10 @@ canvas {
 	.row {
 		flex-direction: column;
 		gap: 0;
+	}
+	/* The 12ch basis is a width; stacked, it would become a 12ch-tall gap. */
+	.row > :first-child {
+		flex-basis: auto;
 	}
 }
 
