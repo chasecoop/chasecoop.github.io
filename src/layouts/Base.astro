@@ -7,9 +7,10 @@ interface Props {
 	title: string;
 	description: string;
 	type?: 'website' | 'article';
+	wide?: boolean;
 }
 
-const { title, description, type } = Astro.props;
+const { title, description, type, wide } = Astro.props;
 ---
 
 <!doctype html>
@@ -19,7 +20,7 @@ const { title, description, type } = Astro.props;
 		<slot name="head" />
 	</head>
 	<body>
-		<Header />
+		<Header wide={wide} />
 		<main id="main">
 			<slot />
 		</main>

@@ -1,0 +1,30 @@
+# Tiles on /launch/, in order. One entry per tile.
+#   id           slug; also the default thumbnail, src/assets/launch/<id>.svg
+#   name         shown on hover
+#   kind         game, app, three.js, rig, ...
+#   description  one line
+#   url          optional: leave it out and the tile is not a link yet
+#   thumbnail    optional: another file in src/assets/launch/ (.svg line art,
+#                or a .png/.jpg/.webp still, cropped square)
+
+- id: family-chess
+  name: Family Chess
+  kind: "[kind]"
+  description: "[one-line description]"
+  url: https://family-chess.family-chess.workers.dev/
+
+- id: byways
+  name: Byways
+  kind: "[kind]"
+  description: "[one-line description]"
+
+- id: marionette
+  name: Marionette
+  kind: "[kind]"
+  description: "[one-line description]"
+
+- id: torus-knot
+  name: Torus Knot
+  kind: "[kind]"
+  description: "[one-line description]"
+  url: https://snarezm.com/projects/torus-knot/

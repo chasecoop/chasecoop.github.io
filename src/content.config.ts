@@ -1,5 +1,5 @@
 import { defineCollection } from 'astro:content';
-import { glob } from 'astro/loaders';
+import { file, glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
 const blog = defineCollection({
@@ -34,4 +34,17 @@ const projects = defineCollection({
 		}),
 });
 
-export const collections = { blog, projects };
+// Tiles on /launch/. Adding one is one entry in launch.yaml.
+const launch = defineCollection({
+	loader: file('./src/content/launch.yaml'),
+	schema: z.object({
+		name: z.string(),
+		kind: z.string(),
+		description: z.string(),
+		url: z.url().optional(),
+		// A file in src/assets/launch/. Defaults to <id>.svg.
+		thumbnail: z.string().optional(),
+	}),
+});
+
+export const collections = { blog, projects, launch };
