@@ -34,17 +34,20 @@ const projects = defineCollection({
 		}),
 });
 
-// Tiles on /launch/. Adding one is one entry in launch.yaml.
-const launch = defineCollection({
-	loader: file('./src/content/launch.yaml'),
+// The project wall on /projects/ and the home page. Adding a tile is one
+// entry in projects.yaml. A project can also have its own page (notes, a live
+// scene) as a file in src/content/projects/.
+const tiles = defineCollection({
+	loader: file('./src/content/projects.yaml'),
 	schema: z.object({
 		name: z.string(),
 		kind: z.string(),
 		description: z.string(),
-		url: z.url().optional(),
-		// A file in src/assets/launch/. Defaults to <id>.svg.
+		// https://... (opens in a new tab) or /projects/<slug>/.
+		url: z.string().optional(),
+		// A file in src/assets/thumbs/. Defaults to <id>.svg.
 		thumbnail: z.string().optional(),
 	}),
 });
 
-export const collections = { blog, projects, launch };
+export const collections = { blog, projects, tiles };

@@ -1,23 +1,9 @@
 ---
-import ProjectGrid from '../../components/ProjectGrid.astro';
+import ProjectWall from '../../components/ProjectWall.astro';
 import Base from '../../layouts/Base.astro';
-import { getProjects } from '../../lib/content';
-
-const projects = await getProjects();
 ---
 
-<Base title="Projects" description="Things I've built. Most of the 3D ones run live in the page.">
-	<div class="col page">
-		<div class="section-head">
-			<h1>projects</h1>
-			<span class="muted">{String(projects.length).padStart(2, '0')}</span>
-		</div>
-		<ProjectGrid projects={projects} />
-	</div>
+<Base title="Projects" description="Things I've built: apps, games, three.js pieces and rigging experiments you can open and run.">
+	<h1 class="sr-only">projects</h1>
+	<ProjectWall />
 </Base>
-
-<style>
-	.page {
-		margin-top: var(--page-top);
-	}
-</style>

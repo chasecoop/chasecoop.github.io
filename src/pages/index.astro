@@ -1,34 +1,33 @@
 ---
+import { getCollection } from 'astro:content';
 import PostList from '../components/PostList.astro';
-import ProjectGrid from '../components/ProjectGrid.astro';
+import ProjectWall from '../components/ProjectWall.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import Base from '../layouts/Base.astro';
-import { getPosts, getProjects } from '../lib/content';
+import { getPosts } from '../lib/content';
 
-const projects = await getProjects();
+const tiles = await getCollection('tiles');
 const posts = (await getPosts()).slice(0, 4);
 ---
 
 <Base title={SITE_TITLE} description={SITE_DESCRIPTION}>
-	<div class="col">
-		<p class="intro muted">{SITE_DESCRIPTION}</p>
+	<p class="col intro muted">{SITE_DESCRIPTION}</p>
 
-		<section aria-labelledby="projects">
-			<div class="section-head">
-				<h2 id="projects">projects</h2>
-				<span class="muted">{String(projects.length).padStart(2, '0')}</span>
-			</div>
-			<ProjectGrid projects={projects} />
-		</section>
+	<section aria-labelledby="projects">
+		<div class="col section-head">
+			<h2 id="projects">projects</h2>
+			<span class="muted">{String(tiles.length).padStart(2, '0')}</span>
+		</div>
+		<ProjectWall />
+	</section>
 
-		<section aria-labelledby="writing" class="writing">
-			<div class="section-head">
-				<h2 id="writing">writing</h2>
-				<a href="/blog/">all posts -&gt;</a>
-			</div>
-			<PostList posts={posts} />
-		</section>
-	</div>
+	<section aria-labelledby="writing" class="col writing">
+		<div class="section-head">
+			<h2 id="writing">writing</h2>
+			<a href="/blog/">all posts -&gt;</a>
+		</div>
+		<PostList posts={posts} />
+	</section>
 </Base>
 
 <style>

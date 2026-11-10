@@ -1,13 +1,12 @@
 ---
 import { SITE_TITLE } from '../consts';
 
-// The left rail (direction B from the launch designs). On phones it becomes
+// The left rail (direction B from the Claude Design mockups). On phones it becomes
 // a bar across the top.
 const path = Astro.url.pathname;
 const links = [
 	{ href: '/projects/', label: 'projects', current: path === '/' || path.startsWith('/projects/') },
 	{ href: '/blog/', label: 'blog', current: path.startsWith('/blog/') },
-	{ href: '/launch/', label: 'launch', current: path.startsWith('/launch/') },
 	{ href: 'https://github.com/chasecoop', label: 'github', current: false },
 ];
 ---

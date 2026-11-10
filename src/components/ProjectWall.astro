@@ -2,52 +2,51 @@
 import type { ImageMetadata } from 'astro';
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
-import order from '../../content/launch.yaml?raw';
-import Base from '../../layouts/Base.astro';
+import order from '../content/projects.yaml?raw';
 
-// Tiles come from src/content/launch.yaml, in file order (getCollection sorts
-// by id, so re-sort by where each id appears). A thumbnail is line art (an SVG
-// drawn with currentColor, inlined) or a still, cropped square.
+// The project wall: square tiles from src/content/projects.yaml, in file
+// order (getCollection sorts by id, so re-sort by where each id appears).
+// A thumbnail is line art (an SVG drawn with currentColor, inlined) or a
+// still, cropped square. Outside links open in a new tab.
 const ids = [...order.matchAll(/^- id: (\S+)/gm)].map((m) => m[1]);
-const tiles = (await getCollection('launch')).sort((a, b) => ids.indexOf(a.id) - ids.indexOf(b.id));
-const svgs = import.meta.glob<string>('../../assets/launch/*.svg', { query: '?raw', import: 'default', eager: true });
-const stills = import.meta.glob<ImageMetadata>('../../assets/launch/*.{png,jpg,jpeg,webp,avif}', {
+const tiles = (await getCollection('tiles')).sort((a, b) => ids.indexOf(a.id) - ids.indexOf(b.id));
+const svgs = import.meta.glob<string>('../assets/thumbs/*.svg', { query: '?raw', import: 'default', eager: true });
+const stills = import.meta.glob<ImageMetadata>('../assets/thumbs/*.{png,jpg,jpeg,webp,avif}', {
 	import: 'default',
 	eager: true,
 });
 const art = (id: string, thumbnail?: string) => {
-	const key = `../../assets/launch/${thumbnail ?? `${id}.svg`}`;
+	const key = `../assets/thumbs/${thumbnail ?? `${id}.svg`}`;
 	return { svg: svgs[key], still: stills[key] };
 };
+const link = (url?: string) =>
+	!url ? {} : url.startsWith('http') ? { href: url, target: '_blank', rel: 'noopener' } : { href: url };
 ---
 
-<Base title="Launch" description="Apps, games and 3D experiments you can open and run.">
-	<h1 class="sr-only">launch</h1>
-	<ul class="grid">
-		{
-			tiles.map(({ id, data }) => {
-				const { svg, still } = art(id, data.thumbnail);
-				const Tile = data.url ? 'a' : 'span';
-				return (
-					<li>
-						<Tile class="tile" {...(data.url ? { href: data.url, target: '_blank', rel: 'noopener' } : {})}>
-							<span class="frame">
-								{svg ? <Fragment set:html={svg} /> : still ? <Image src={still} width={640} alt="" /> : null}
+<ul class="grid">
+	{
+		tiles.map(({ id, data }) => {
+			const { svg, still } = art(id, data.thumbnail);
+			const Tile = data.url ? 'a' : 'span';
+			return (
+				<li>
+					<Tile class="tile" {...link(data.url)}>
+						<span class="frame">
+							{svg ? <Fragment set:html={svg} /> : still ? <Image src={still} width={640} alt="" /> : null}
+						</span>
+						<span class="cap">
+							<span class="app">{data.name}</span>
+							<span class="desc">
+								<span class="kind">{data.kind}</span> / {data.description}
+								{!data.url && ' / [URL]'}
 							</span>
-							<span class="cap">
-								<span class="app">{data.name}</span>
-								<span class="desc">
-									<span class="kind">{data.kind}</span> / {data.description}
-									{!data.url && ' / [URL]'}
-								</span>
-							</span>
-						</Tile>
-					</li>
-				);
-			})
-		}
-	</ul>
-</Base>
+						</span>
+					</Tile>
+				</li>
+			);
+		})
+	}
+</ul>
 
 <style>
 	.grid {

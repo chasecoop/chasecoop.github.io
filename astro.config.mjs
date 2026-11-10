@@ -9,6 +9,8 @@ export default defineConfig({
 	site: 'https://snarezm.com',
 	trailingSlash: 'always',
 	integrations: [mdx(), sitemap()],
+	// /launch/ was merged into /projects/.
+	redirects: { '/launch/': '/projects/' },
 	markdown: {
 		// Prism emits classes; Shiki emits inline style attributes the CSP would block.
 		syntaxHighlight: 'prism',

@@ -1,10 +1,12 @@
-# Tiles on /launch/, in order. One entry per tile.
-#   id           slug; also the default thumbnail, src/assets/launch/<id>.svg
+# Tiles on /projects/ and the home page, in order. One entry per tile.
+#   id           slug; also the default thumbnail, src/assets/thumbs/<id>.svg
 #   name         shown on hover
 #   kind         game, app, three.js, rig, ...
 #   description  one line
-#   url          optional: leave it out and the tile is not a link yet
-#   thumbnail    optional: another file in src/assets/launch/ (.svg line art,
+#   url          optional. A live app (https://..., opens in a new tab) or a
+#                project page on this site (/projects/<slug>/). Leave it out
+#                and the tile is not a link yet.
+#   thumbnail    optional: another file in src/assets/thumbs/ (.svg line art,
 #                or a .png/.jpg/.webp still, cropped square)
 
 - id: family-chess
@@ -27,4 +29,4 @@
   name: Torus Knot
   kind: "[kind]"
   description: "[one-line description]"
-  url: https://snarezm.com/projects/torus-knot/
+  url: /projects/torus-knot/
