@@ -29,6 +29,10 @@ const projects = defineCollection({
 			// Name of a module in src/scripts/three/ to mount on the project page.
 			scene: z.string().optional(),
 			repo: z.url().optional(),
+			// Site path of a standalone demo in public/demo/<slug>/, e.g. /demo/jotzone/.
+			demo: z.string().optional(),
+			// Screenshot of the demo, shown as a link to it.
+			shot: image().optional(),
 			featured: z.boolean().default(false),
 			draft: z.boolean().default(false),
 		}),

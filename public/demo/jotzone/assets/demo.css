@@ -1,0 +1,8 @@
+/* Demo build only. The host site shows a small fixed chip in the bottom-left
+   corner; these rules keep Jotzone's own controls clear of it. */
+.sidebar-foot { padding-bottom: calc(52px + env(safe-area-inset-bottom)); }
+.lightbox-open { bottom: calc(56px + env(safe-area-inset-bottom)); }
+@media (max-width: 760px) {
+  /* Phone: the composer spans the bottom edge, so leave a strip under it. */
+  .app { height: calc(100vh - 44px); height: calc(100dvh - 44px); height: calc(var(--vvh, 100dvh) - 44px); }
+}

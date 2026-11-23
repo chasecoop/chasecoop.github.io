@@ -1,0 +1,37 @@
+---
+title: Jotzone
+summary: A private notes app that works like messaging yourself in Slack, with link previews, search, a graph and a minimap.
+date: 2026-11-21
+tech: [Node.js, SQLite, JavaScript]
+tags: [web, notes]
+demo: /demo/jotzone/
+shot: ../../assets/shots/jotzone.png
+---
+
+I wanted one place to send myself notes, links and files from any device, without paying for a chat product to get it. Jotzone looks and feels like a Slack DM with yourself, and has nothing else from Slack: no channels, no other users, no threads.
+
+### What you can do
+
+You post text, links and files into one conversation. Messages support bold, italic, strike, inline code, code blocks, quotes, bulleted lists and `[label](url)` links. Links get preview cards. A YouTube link plays inline, an X post shows its author and text, and an image link shows the image.
+
+The sidebar filters by source (links, YouTube, X, images, files) and by category, such as research, recipes or to-dos. Search handles prefixes and also finds a bookmark by its page title when the message was only a URL. The graph view connects messages that link to the same website, share a #tag, or use similar words, and you click a dot to jump to that note. The minimap runs down the right edge like the one in VS Code and shows your whole history, colored by category.
+
+### How it is built
+
+There are no npm dependencies. The server uses Node's built-in HTTP module and `node:sqlite`, with FTS5 for full-text search. The frontend is plain HTML, CSS and ES modules with no build step.
+
+Link previews are fetched on the server. The fetcher resolves DNS itself and refuses private, loopback and link-local addresses, so a pasted link can't be used to poke at the machine's own network. It also limits redirects, time and response size.
+
+Categories come from a small language model, Claude Haiku, when an API key is set. Without a key, simple rules based on the website and a few keywords pick the category. You can override any message by hand, and the app keeps your choice.
+
+The graph links each message to hubs for the sites and tags it uses. Messages are also connected to their closest neighbors by word similarity, using TF-IDF and cosine distance.
+
+I built it with Claude Code.
+
+### Security
+
+It is meant to sit on the public internet with exactly one user. The server only knows a scrypt hash of the password and refuses to start without one. Sessions use a random token in an HttpOnly cookie, and the database stores only its hash. Failed logins are rate limited, every write request is checked against CSRF, and the Content-Security-Policy allows no inline scripts. Uploaded files are served only to a signed-in browser, and HTML and SVG are sent as downloads. If you turn on smart categories, the text of your messages goes to Anthropic. Without a key, no message text is sent to anyone.
+
+### What the demo is
+
+The demo runs the same frontend as the real app, but against a fake backend that lives in your browser. The notes are invented, and none of it comes from my real data. Some things are switched off. New links don't get previews, there are no video embeds, and you can only upload images. Everything resets when you reload the page.

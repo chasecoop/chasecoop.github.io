@@ -1,5 +1,6 @@
 ---
 import { type CollectionEntry, render } from 'astro:content';
+import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import { getProjects } from '../../lib/content';
 
@@ -16,7 +17,7 @@ interface Props {
 }
 
 const { project, next } = Astro.props;
-const { title, summary, date, tech, scene, repo } = project.data;
+const { title, summary, date, tech, scene, repo, demo, shot } = project.data;
 const { Content } = await render(project);
 ---
 
@@ -41,6 +42,22 @@ const { Content } = await render(project);
 						</noscript>
 					</div>
 					<figcaption class="muted">drag to spin</figcaption>
+				</figure>
+			)
+		}
+
+		{
+			demo && (
+				<figure class="col-wide demo-wrap">
+					{shot && (
+						<a class="shot" href={demo} aria-label={`Open the live demo of ${title}`}>
+							<Image src={shot} width={1080} alt={`Screenshot of the ${title} demo`} />
+						</a>
+					)}
+					<figcaption>
+						<a href={demo}>open the live demo</a>
+						<span class="muted"> runs in your browser on made-up data</span>
+					</figcaption>
 				</figure>
 			)
 		}
@@ -141,6 +158,19 @@ const { Content } = await render(project);
 		width: 100%;
 		height: 100%;
 		touch-action: none;
+	}
+	.demo-wrap {
+		margin-block: var(--space-5) 0;
+	}
+	.shot {
+		display: block;
+		background: var(--stage-bg);
+		border-radius: var(--radius);
+	}
+	.shot img {
+		display: block;
+		width: 100%;
+		height: auto;
 	}
 	.noscript {
 		position: absolute;

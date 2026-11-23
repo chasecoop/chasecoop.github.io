@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1a1d21" media="(prefers-color-scheme: dark)">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Jotzone demo</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="showcase-note" content="Everything here is made-up sample data held in this tab's memory, so reloading or signing out resets it. Pasted links get no preview card, videos open in a new tab instead of playing here, and only images up to 1.5 MB can be attached.">
+  <meta name="showcase-corner" content="bottom-left">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/demo.css">
+  <link rel="stylesheet" href="../_kit/chip.css">
+  <script type="module" src="../_kit/chip.js"></script>
+  <script type="module" src="assets/app.js"></script>
+</head>
+<body>
+  <div class="app" id="app">
+
+    <aside class="sidebar" id="sidebar" aria-label="Sidebar">
+      <div class="ws"><button class="ws-name wordmark" type="button" id="homeBtn" title="All messages"><img class="ws-logo" src="favicon.svg" alt="" width="22" height="22">Jotzone</button></div>
+      <nav class="nav">
+        <button class="nav-item active" type="button" data-view="dm"><span class="nav-icon" data-icon="home"></span><span class="nav-label">All messages</span><span class="nav-count" data-count="all"></span></button>
+        <button class="nav-item" type="button" data-view="pinned"><span class="nav-icon" data-icon="pin"></span><span class="nav-label">Pinned</span><span class="nav-count" data-count="pinned"></span></button>
+        <div class="section-label">Sources</div>
+        <button class="nav-item" type="button" data-view="links"><span class="nav-icon" data-icon="link"></span><span class="nav-label">Links</span><span class="nav-count" data-count="links"></span></button>
+        <button class="nav-item" type="button" data-view="youtube"><span class="nav-icon" data-icon="play"></span><span class="nav-label">YouTube</span><span class="nav-count" data-count="youtube"></span></button>
+        <button class="nav-item" type="button" data-view="x"><span class="nav-icon" data-icon="xlogo"></span><span class="nav-label">X / Twitter</span><span class="nav-count" data-count="x"></span></button>
+        <button class="nav-item" type="button" data-view="images"><span class="nav-icon" data-icon="image"></span><span class="nav-label">Images</span><span class="nav-count" data-count="images"></span></button>
+        <button class="nav-item" type="button" data-view="files"><span class="nav-icon" data-icon="file"></span><span class="nav-label">Files</span><span class="nav-count" data-count="files"></span></button>
+        <div class="section-label">Categories <span class="smart-badge" id="smartBadge" hidden title="Sorted automatically by Claude">✦ Smart</span></div>
+        <div id="catNav"></div>
+      </nav>
+      <div class="sidebar-foot">
+        <a class="nav-item" href="#" download><span class="nav-icon" data-icon="download"></span>Export all (JSON)</a>
+        <button class="nav-item" type="button" id="logoutBtn"><span class="nav-icon" data-icon="logout"></span>Sign out</button>
+      </div>
+    </aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="main" id="main">
+      <div class="main-head">
+        <button class="icon-btn hamburger" id="menuBtn" type="button" aria-label="Open sidebar"></button>
+        <div class="search-wrap">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="search" type="search" placeholder="Search your messages" autocomplete="off" spellcheck="false" enterkeyhint="search" aria-label="Search messages">
+          <kbd class="search-kbd" id="searchKbd">⌘K</kbd>
+        </div>
+        <button class="icon-btn graph-btn" type="button" id="graphBtn" title="Graph view" aria-label="Graph view" aria-pressed="false" aria-controls="graphPanel" data-icon="graph"></button>
+      </div>
+      <div class="view-banner" id="banner" hidden></div>
+      <div class="scroll-row">
+        <div class="scroller" id="scroller">
+          <div class="list" id="list" role="log" aria-live="polite"></div>
+        </div>
+        <div class="minimap-wrap" id="minimapWrap" hidden>
+          <canvas id="minimap" aria-label="Overview of all messages. Click or drag to move through your history."></canvas>
+          <div class="minimap-tip" id="minimapTip" hidden></div>
+        </div>
+      </div>
+      <button class="jump-pill" id="jumpPill" type="button" hidden>Jump to recent messages <span aria-hidden="true">↓</span></button>
+
+      <div class="composer-wrap" id="composerWrap">
+        <div class="composer" id="composer">
+          <div class="fmt-bar" id="fmtBar">
+            <button type="button" class="fmt" data-fmt="bold" title="Bold (⌘B)" aria-label="Bold"></button>
+            <button type="button" class="fmt" data-fmt="italic" title="Italic (⌘I)" aria-label="Italic"></button>
+            <button type="button" class="fmt" data-fmt="strike" title="Strikethrough" aria-label="Strikethrough"></button>
+            <span class="fmt-sep"></span>
+            <button type="button" class="fmt" data-fmt="code" title="Code" aria-label="Code"></button>
+            <button type="button" class="fmt" data-fmt="codeblock" title="Code block" aria-label="Code block"></button>
+            <button type="button" class="fmt" data-fmt="quote" title="Quote" aria-label="Quote"></button>
+            <button type="button" class="fmt" data-fmt="bullets" title="Bulleted list" aria-label="Bulleted list"></button>
+          </div>
+          <div class="chips" id="chips" hidden></div>
+          <textarea id="input" rows="1" placeholder="Jot something down…" aria-label="Message" enterkeyhint="enter"></textarea>
+          <div class="composer-foot">
+            <button type="button" class="attach-btn" id="attachBtn" title="Attach files" aria-label="Attach files"></button>
+            <input type="file" id="fileInput" multiple hidden>
+            <span class="hint" id="hint">Return to send · Shift+Return for new line</span>
+            <button type="button" class="send-btn" id="sendBtn" title="Send" aria-label="Send" disabled></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="drop-overlay" id="dropOverlay" hidden><div class="drop-box">Drop files to upload</div></div>
+    </main>
+
+    <aside class="graph-panel" id="graphPanel" aria-label="Graph view" hidden>
+      <div class="graph-head">
+        <div class="graph-title">Graph</div>
+        <div class="graph-stats" id="graphStats"></div>
+        <button class="icon-btn" type="button" id="graphFit" title="Fit to view" aria-label="Fit to view" data-icon="fit"></button>
+        <button class="icon-btn" type="button" id="graphClose" title="Close graph" aria-label="Close graph" data-icon="close"></button>
+      </div>
+      <div class="graph-filters" role="group" aria-label="Connections to show">
+        <button type="button" class="graph-chip on" data-kind="site" aria-pressed="true"><span class="graph-swatch site"></span>Websites</button>
+        <button type="button" class="graph-chip on" data-kind="tag" aria-pressed="true"><span class="graph-swatch tag"></span>#Tags</button>
+        <button type="button" class="graph-chip on" data-kind="sim" aria-pressed="true"><span class="graph-swatch sim"></span>Similar words</button>
+      </div>
+      <div class="graph-body">
+        <canvas id="graphCanvas" aria-label="Graph of your messages. Click a dot to open that message."></canvas>
+        <div class="graph-tip" id="graphTip" hidden></div>
+        <div class="graph-empty" id="graphEmpty" hidden></div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="lightbox" id="lightbox" hidden>
+    <img id="lightboxImg" alt="" referrerpolicy="no-referrer">
+    <a class="lightbox-open" id="lightboxOpen" href="#" target="_blank" rel="noopener noreferrer">Open original</a>
+  </div>
+  <div class="modal-back" id="modal" hidden></div>
+  <div class="toast" id="toast" role="status" hidden></div>
+</body>
+</html>

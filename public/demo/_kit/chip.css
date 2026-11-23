@@ -1,0 +1,124 @@
+/* Shared demo chip. Self-contained: no site fonts or variables, so it reads
+   the same on top of any app, light or dark. */
+.showcase-chip,
+.showcase-note {
+	position: fixed;
+	z-index: 2147483647;
+	box-sizing: border-box;
+	margin: 0;
+	background: #f4f4f2;
+	color: #232528;
+	border: 1px solid #8a8d92;
+	font: 12px/1.4 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+	letter-spacing: 0;
+	text-align: left;
+}
+
+.showcase-chip {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 3px 8px;
+	white-space: nowrap;
+	max-width: calc(100vw - 16px);
+}
+
+.showcase-chip a,
+.showcase-chip button {
+	font: inherit;
+	color: #232528;
+	background: none;
+	border: 0;
+	padding: 0;
+	margin: 0;
+	cursor: pointer;
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+.showcase-chip a:hover,
+.showcase-chip button:hover {
+	color: #9a3412;
+}
+.showcase-chip a:focus-visible,
+.showcase-chip button:focus-visible,
+.showcase-note button:focus-visible {
+	outline: 2px solid #c2410c;
+	outline-offset: 2px;
+}
+.showcase-sep {
+	color: #5f6267;
+}
+.showcase-toggle[aria-expanded="true"] {
+	text-decoration: none;
+	background: #232528;
+	color: #f4f4f2;
+}
+.showcase-chip .showcase-toggle[aria-expanded="true"]:hover {
+	color: #f4f4f2;
+}
+
+.showcase-note {
+	max-width: min(280px, calc(100vw - 16px));
+	padding: 8px 10px;
+	white-space: normal;
+}
+.showcase-note[hidden] {
+	display: none;
+}
+.showcase-note p {
+	margin: 0 0 6px;
+}
+.showcase-note button {
+	font: inherit;
+	color: #232528;
+	background: none;
+	border: 0;
+	padding: 0;
+	cursor: pointer;
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+/* Corners. Safe-area insets keep it clear of notches and home bars. */
+.showcase-bottom-right {
+	right: calc(8px + env(safe-area-inset-right, 0px));
+	bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+}
+.showcase-bottom-left {
+	left: calc(8px + env(safe-area-inset-left, 0px));
+	bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+}
+.showcase-top-right {
+	right: calc(8px + env(safe-area-inset-right, 0px));
+	top: calc(8px + env(safe-area-inset-top, 0px));
+}
+.showcase-top-left {
+	left: calc(8px + env(safe-area-inset-left, 0px));
+	top: calc(8px + env(safe-area-inset-top, 0px));
+}
+/* The note panel sits just inside the chip, on the side facing the page. */
+.showcase-note.showcase-bottom-right,
+.showcase-note.showcase-bottom-left {
+	bottom: calc(40px + env(safe-area-inset-bottom, 0px));
+}
+.showcase-note.showcase-top-right,
+.showcase-note.showcase-top-left {
+	top: calc(40px + env(safe-area-inset-top, 0px));
+}
+
+@media (max-width: 360px) {
+	.showcase-chip {
+		gap: 4px;
+		padding: 3px 6px;
+	}
+}
+
+/* No motion is used; this keeps it that way if any is added. */
+@media (prefers-reduced-motion: reduce) {
+	.showcase-chip,
+	.showcase-chip *,
+	.showcase-note {
+		transition: none;
+		animation: none;
+	}
+}

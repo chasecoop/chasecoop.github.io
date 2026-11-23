@@ -9,6 +9,12 @@
 #   thumbnail    optional: another file in src/assets/thumbs/ (.svg line art,
 #                or a .png/.jpg/.webp still, cropped square)
 
+- id: jotzone
+  name: Jotzone
+  kind: "[kind]"
+  description: "[one-line description]"
+  url: /projects/jotzone/
+
 - id: family-chess
   name: Family Chess
   kind: "[kind]"
